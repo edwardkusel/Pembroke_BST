@@ -1,0 +1,127 @@
+/**********************************************************
+PART A:
+* HW3: BinarySearchTree
+* CS 15
+* by Edward Kusel, November 2021
+* README
+*
+*********************************************************/
+
+PART B:
+Program Purpose:
+
+The purpose of this program is to implement a binary search tree (BST) that
+supports a multiset (set that can contain duplicate values)
+
+PART C:
+Acknowledgements: 
+
+my friend Eric 
+Prof. Milod
+
+PART D:
+Files: 
+
+hw3.cpp:
+     Driver file, creates different BST instances and prints their information
+     and the trees resulting from performing different operations on them
+
+BinarySearchTree.cpp:
+     Implementation of BinarySearchTree class. Implements a BST that supports
+     a multiset.
+
+BinarySearchTree.h:
+     Interface of BinarySearchTree class.
+     
+the_hw3:
+     reference implementation for students to see how hw3.cpp should work
+
+Makefile:
+    makefile for the entire program. Can be used to create a BinarySearchTree
+    object file, compile and run the driver file, and run the
+    unit_tests framework for testing.
+
+unit_tests.h:
+    Interface for the unit_test framework. This is where isolated parts of 
+    the BinarySearchTree class can be tested through individual functions
+
+PART E:
+
+Compile/run:
+    - Compile using
+        make hw3
+    - run executable with
+        ./hw3
+   
+PART F:
+
+Data Structures:
+    Binary Search Tree that supports a multiset.
+        A binary search tree (BST) is a special kind of binary tree that
+        allows us to efficiently search for data using the BST invariant.
+        This invariant is that for a given node n with key k, all nodes
+        with keys less than k are in n's left subtree and all nodes with keys
+        greater than k are in n's right subtree. By storing a multiset,
+        each node stores a count of the number of duplicates. The benefit
+        of BSTs is that binary search can be used in any case where a node
+        with a given key has to be identified and for certian operations. For 
+        example, with the contains operation, the time complexity for a full
+        BST is O(log n).
+
+Testing:
+
+For most of the functions I implemented, the case where the BST is empty
+was a test case. Then, after this case was tested could I test the case where
+the BST was nonempty. Because most of the implemented functions were private 
+functions that have a public overloaded version that the client will call,
+private functions were tested indirectly by testing their public companions.
+
+I implemented the tree_height and insert functions early on so I could utilize
+the print_tree function heavily in the rest of my unit tests. Then, using
+the print function, I would typically create a BST instance, test on the 
+empty tree case and then fill the BST with values, perform the given
+operation and visually check the results using the tree_print function.
+An example of this testing method is when I tested the assignment operator
+overload function. I created a BST instance, filled it and printed to check
+the original state and then performed the key operation being tested in the
+unit test (setting the instance equal to a second non-equal instance) and then
+printed again to check the results.
+
+The only function I tested for many different cases that gave me some trouble
+with edge cases beyond the typical checking for an empty tree or current
+node equaling nullptr was the remove function.
+
+In the case of the remove function, I split up my function writing and testing
+into a series of very granular steps where in each step I tested for a
+different case (some of these cases had subcases). For example, I recognized
+that removing a node that is a leaf would be a separate case so I tested
+for this case with its own unit test function while I wrote this piece of my
+remove function. Because of how clearly different the subcases are in the case
+of the node being a leaf, I even split this case up into its own subcases when
+writing unit tests for the leaf case. In this way, I could clearly test for
+the subcases of trying to remove a leaf that is left or right of a given node.
+
+One tricky edge case related to the remove function was when I want to remove
+a given node with two children and the node I want to replace this node with
+has a count greater than one. For example, if we have this tree:
+                5
+            4       7*
+and I want to remove 5, it clearly has two children and using my choice of
+replacing 5 with the minimum value in its right subtree (the node at 7*), 
+this desired replacement node has a count equal to two. I was running into the
+problem where instead of replacing 5 with the entire node at 7*, I would only
+reduce the count of 7 by one. To fix this, I explicitly changed the count of
+the node situated at 7* to make the replacement of 5 with 7* compatible with 
+my desired replacement process (not simply reducing the count but rather 
+moving the entire node).
+
+Thus, instead of ending up with a tree like this:
+                7
+            4        7
+I successfully end up with a tree like this:
+                7
+            4
+
+Another edge case was when the root has one child and you are trying to remove
+the root. This called for a separate conditional in my one_child_helper
+function. I found this edge case because of my extensive unit test variety.
