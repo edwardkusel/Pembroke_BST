@@ -122,7 +122,7 @@ BinarySearchTree::Node *BinarySearchTree::find_max(Node *node) const
         // base case
         if (node->right == nullptr) {
                 return node;
-        // recursive call, uses BST invariant that minimum value will be
+        // recursive call, uses BST invariant that maximum value will be
         // "furthest right"     
         } else {
                 return find_max(node->right);
