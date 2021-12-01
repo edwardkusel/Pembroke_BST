@@ -11,7 +11,8 @@ PART B:
 Program Purpose:
 
 The purpose of this program is to implement a binary search tree (BST) that
-supports a multiset (set that can contain duplicate values)
+supports a multiset (set that can contain duplicate values) by using 
+recursion.
 
 PART C:
 Acknowledgements: 
@@ -64,9 +65,11 @@ Data Structures:
         greater than k are in n's right subtree. By storing a multiset,
         each node stores a count of the number of duplicates. The benefit
         of BSTs is that binary search can be used in any case where a node
-        with a given key has to be identified and for certian operations. For 
-        example, with the contains operation, the time complexity for a full
-        BST is O(log n).
+        with a given key has to be identified, improving the speed of many
+        operations. For example, with the contains operation, the time 
+        complexity for a full BST is O(log n) in the worst case, a great
+        speed improvement over linear search which has a time complexity of
+        O(n) in the worst case.
 
 Testing:
 
