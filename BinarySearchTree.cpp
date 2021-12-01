@@ -18,13 +18,20 @@
 
 using namespace std;
 
+/* constructor
+ *    Purpose: initializes an empty tree
+ *    Returns: none
+ */
 BinarySearchTree::BinarySearchTree()
 {
         // initializes empty tree
         root = nullptr;
 
 }
-
+/* destructor
+ *    Purpose: deletes all heap-allocated memory, clears tree
+ *    Returns: none
+ */
 BinarySearchTree::~BinarySearchTree()
 {
         // walk tree in post-order traversal and delete
@@ -33,7 +40,11 @@ BinarySearchTree::~BinarySearchTree()
                          // away, but might want to guard against someone
                          // using a pointer after deleting
 }
-
+/* post_order_delete
+ *    Purpose: walks tree in post-order traversal, deleting nodes as it goes
+ * Parameters: Node pointer
+ *    Returns: none
+ */
 void BinarySearchTree::post_order_delete(Node *node)
 {
         // tree is empty, nothing to do
@@ -47,15 +58,22 @@ void BinarySearchTree::post_order_delete(Node *node)
         // delete current node
         delete node;
 }
-
-// copy constructor
+/* copy constructor
+ *    Purpose: uses pre-order traversal to copy the tree
+ * Parameters: address of BinarySearchTree instance
+ *    Returns: none
+ */
 BinarySearchTree::BinarySearchTree(const BinarySearchTree &source)
 {
-        // use pre-order traversal to copy the tree
         root = pre_order_copy(source.root);
 }
-
-// assignment overload
+/* assignment overload
+ *    Purpose: checks for self-assignment when "=" operator used, deletes
+ *             current tree if it exists and then uses pre-order traversal
+ *             to copy the tree
+ * Parameters: address of BinarySearchTree instance
+ *    Returns: this pointer
+ */
 BinarySearchTree &BinarySearchTree::operator=(const BinarySearchTree &source)
 {
         // check for self-assignment
@@ -67,7 +85,11 @@ BinarySearchTree &BinarySearchTree::operator=(const BinarySearchTree &source)
         }
         return *this;
 }
-
+/* pre_order_copy
+ *    Purpose: copies a tree using pre-order tree traversal
+ * Parameters: Node pointer
+ *    Returns: Node pointer pointing to copied tree
+ */
 BinarySearchTree::Node *BinarySearchTree::pre_order_copy(Node *node) const
 {
         // handle empty tree
@@ -86,7 +108,12 @@ BinarySearchTree::Node *BinarySearchTree::pre_order_copy(Node *node) const
         }
 
 }
-
+/* find_min wrapper function
+ *    Purpose: Used to enable recursion in private find_min function to return
+ *             minimum value in a tree
+ * Parameters: none
+ *    Returns: int
+ */
 int BinarySearchTree::find_min() const
 {
         if (root == nullptr)
@@ -95,7 +122,12 @@ int BinarySearchTree::find_min() const
 
         return find_min(root)->data;
 }
-
+/* find_min
+ *    Purpose: uses recursion and BST invariant to find and return node 
+ *             containing the minimum value in a tree
+ * Parameters: Node pointer
+ *    Returns: Pointer to node containing min value
+ */
 BinarySearchTree::Node *BinarySearchTree::find_min(Node *node) const
 {
         // base case
@@ -107,7 +139,12 @@ BinarySearchTree::Node *BinarySearchTree::find_min(Node *node) const
                 return find_min(node->left);
         }
 }
-
+/* find_max wrapper function
+ *    Purpose: Used to enable recursion in private find_max function to return
+ *             maximum value in a tree
+ * Parameters: none
+ *    Returns: int
+ */
 int BinarySearchTree::find_max() const
 {
         if (root == nullptr)
@@ -116,7 +153,12 @@ int BinarySearchTree::find_max() const
 
         return find_max(root)->data;
 }
-
+/* find_max
+ *    Purpose: uses recursion and BST invariant to find and return node 
+ *             containing the maximum value in a tree
+ * Parameters: Node pointer
+ *    Returns: Node containing max value
+ */
 BinarySearchTree::Node *BinarySearchTree::find_max(Node *node) const
 {
         // base case
@@ -128,6 +170,12 @@ BinarySearchTree::Node *BinarySearchTree::find_max(Node *node) const
                 return find_max(node->right);
         }
 }
+/* contains wrapper function
+ *    Purpose: Used to enable recursion in private contains function to return
+ *             true if tree contains a given value, false if not
+ * Parameters: value
+ *    Returns: bool
+ */
 bool BinarySearchTree::contains(int value) const
 {
         if (root == nullptr) {
@@ -136,7 +184,13 @@ bool BinarySearchTree::contains(int value) const
                 return contains(root, value);
         }
 }
-
+/* contains
+ *    Purpose: uses recursion and BST invariant to search a tree starting at
+ *             a given node for a value, returns true if the tree contains the
+ *             value and false otherwise
+ * Parameters: Node pointer and value
+ *    Returns: bool
+ */
 bool BinarySearchTree::contains(Node *node, int value) const
 {
         // if tree is empty
@@ -155,12 +209,24 @@ bool BinarySearchTree::contains(Node *node, int value) const
                 return false;
         }
 }
- 
+/* insert wrapper function
+ *    Purpose: Used to enable recursion in private insert function to insert
+ *             a given value into the tree, while maintaining
+ *             the BST invariants
+ * Parameters: value
+ *    Returns: none
+ */
 void BinarySearchTree::insert(int value)
 {
         insert(root, nullptr, value);
 }
-
+/* insert
+ *    Purpose: uses recursion and BST invariant to insert a value into the
+ *             tree, either creating a new node or incrementing the count
+ *             of an existing node, all while maintaining BST invariants
+ * Parameters: Node pointer to node, Node pointer to parent of node, value
+ *    Returns: none
+ */
 void BinarySearchTree::insert(Node *node, Node *parent, int value)
 {
         // node is not in tree, create new node with count of 1
@@ -177,11 +243,24 @@ void BinarySearchTree::insert(Node *node, Node *parent, int value)
         }
 
 }
-
+/* remove wrapper function
+ *    Purpose: Used to enable recursion in private remove function to remove
+ *             a given value from the tree, while maintaining
+ *             the BST invariants
+ * Parameters: value
+ *    Returns: true if value is removed, false otherwise
+ */
 bool BinarySearchTree::remove(int value)
 {
         return remove(root, nullptr, value);
 }
+/* remove
+ *    Purpose: uses recursion and BST invariant to remove a value from the
+ *             tree, either removing a node or decrementing the count
+ *             of an existing node, all while maintaining BST invariants
+ * Parameters: Node pointer to node, Node pointer to parent of node, value
+ *    Returns: true if value is removed, false otherwise
+ */
 bool BinarySearchTree::remove(Node *node, Node *parent, int value)
 {
         // empty tree case
@@ -198,11 +277,22 @@ bool BinarySearchTree::remove(Node *node, Node *parent, int value)
                 return remove(node->right, node, value);
         }
 }
+/* tree_height wrapper function
+ *    Purpose: Used to enable recursion in private tree_height function to
+ *             return tree height from the root
+ * Parameters: none
+ *    Returns: tree height int
+ */
 int BinarySearchTree::tree_height() const
 {
         return tree_height(root);
 }
-
+/* tree_height
+ *    Purpose: uses recursion and BST invariant to find the longest path from
+ *             a given node to a leaf
+ * Parameters: Node pointer
+ *    Returns: depth from a given node
+ */
 int BinarySearchTree::tree_height(Node *node) const
 {
         // check for empty tree
@@ -212,13 +302,22 @@ int BinarySearchTree::tree_height(Node *node) const
         return 
         1 + max_helper(tree_height(node->left), tree_height(node->right));
 }
-
-// returns the total number of nodes
+/* node_count wrapper function
+ *    Purpose: Used to enable recursion in private node_count function to
+ *             return the total number of nodes in a tree
+ * Parameters: none
+ *    Returns: tree height int
+ */
 int BinarySearchTree::node_count() const
 {
         return node_count(root);
 }
-
+/* node_count
+ *    Purpose: uses recursion to return the total number of nodes from a given
+ *             (including current node) and all nodes beneath it
+ * Parameters: Node pointer
+ *    Returns: total number of nodes
+ */
 int BinarySearchTree::node_count(Node *node) const
 {
         if (node == nullptr) {
@@ -227,13 +326,23 @@ int BinarySearchTree::node_count(Node *node) const
                 return 1 + node_count(node->left) + node_count(node->right);
         }
 }
-
-// return the sum of all the node values (including duplicates)
+/* count_total wrapper function
+ *    Purpose: Used to enable recursion in private count_total function to
+ *             return the sum of all values in the tree's nodes, accounting
+ *             for multiplicity
+ * Parameters: none
+ *    Returns: int
+ */
 int BinarySearchTree::count_total() const
 {
         return count_total(root);
 }
-
+/* count_total
+ *    Purpose: uses recursion to return the sum of all values in a tree 
+ *             starting at a given node, accounting for multiplicity
+ * Parameters: Node pointer
+ *    Returns: int
+ */
 int BinarySearchTree::count_total(Node *node) const
 {
         if (node == nullptr) {
@@ -243,7 +352,11 @@ int BinarySearchTree::count_total(Node *node) const
                         count_total(node->left) + count_total(node->right);
         }
 }
-
+/* find_parent
+ *    Purpose: uses recursion to find the parent of a given node
+ * Parameters: Node pointer pointing to node, Node pointer pointing to child
+ *    Returns: parent Node
+ */
 BinarySearchTree::Node *BinarySearchTree::find_parent(Node *node,
                                                       Node *child) const
 {
